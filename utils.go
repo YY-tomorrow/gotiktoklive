@@ -330,9 +330,25 @@ func toUser(u *pb.User) *User {
 		Nickname: u.Nickname,
 	}
 
-	if u.AvatarLarge != nil && u.AvatarJpg.UrlList != nil {
+	if u.AvatarThumb != nil && len(u.AvatarThumb.UrlList) > 0 {
+		user.ProfilePicture = &ProfilePicture{
+			Urls: u.AvatarThumb.UrlList,
+		}
+	} else if u.AvatarMedium != nil && len(u.AvatarMedium.UrlList) > 0 {
+		user.ProfilePicture = &ProfilePicture{
+			Urls: u.AvatarMedium.UrlList,
+		}
+	} else if u.AvatarLarge != nil && len(u.AvatarLarge.UrlList) > 0 {
+		user.ProfilePicture = &ProfilePicture{
+			Urls: u.AvatarLarge.UrlList,
+		}
+	} else if u.AvatarJpg != nil && len(u.AvatarJpg.UrlList) > 0 {
 		user.ProfilePicture = &ProfilePicture{
 			Urls: u.AvatarJpg.UrlList,
+		}
+	} else {
+		user.ProfilePicture = &ProfilePicture{
+			Urls: []string{},
 		}
 	}
 
